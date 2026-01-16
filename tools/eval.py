@@ -29,7 +29,7 @@ def parse_args():
     
     parser.add_argument('--cfg',
                         help='experiment configure file name',
-                        default="experiments/cityscapes/pidnet_small_cityscapes.yaml",
+                        default="/zju/wzs_cv/Image-Semantic-Segmentation/PIDNet/configs/camvid/pidnet_small_camvid.yaml",
                         type=str)
     parser.add_argument('opts',
                         help="Modify config options using the command-line",
@@ -112,7 +112,8 @@ def main():
         mean_IoU, IoU_array, pixel_acc, mean_acc = testval(config, 
                                                            test_dataset, 
                                                            testloader, 
-                                                           model)
+                                                           model
+                                                          )
     
         msg = 'MeanIU: {: 4.4f}, Pixel_Acc: {: 4.4f}, \
             Mean_Acc: {: 4.4f}, Class IoU: '.format(mean_IoU, 
@@ -122,7 +123,7 @@ def main():
 
 
     end = timeit.default_timer()
-    logger.info('Mins: %d' % np.int((end-start)/60))
+    logger.info('Mins: %d' % int((end-start)/60))
     logger.info('Done')
 
 

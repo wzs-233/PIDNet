@@ -11,7 +11,7 @@ PRINT_FREQ: 10
 DATASET:
   DATASET: camvid
   ROOT: data/
-  TEST_SET: 'list/camvid/val.lst'
+  TEST_SET: 'list/camvid/test.lst'
   TRAIN_SET: 'list/camvid/trainval.lst'
   NUM_CLASSES: 11
 MODEL:

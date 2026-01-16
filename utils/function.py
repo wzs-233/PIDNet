@@ -129,7 +129,7 @@ def validate(config, testloader, model, writer_dict):
 
 
 def testval(config, test_dataset, testloader, model,
-            sv_dir='./', sv_pred=False):
+            sv_dir='./', sv_pred=True):
     model.eval()
     confusion_matrix = np.zeros((config.DATASET.NUM_CLASSES, config.DATASET.NUM_CLASSES))
     with torch.no_grad():

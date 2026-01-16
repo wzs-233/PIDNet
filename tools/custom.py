@@ -39,10 +39,10 @@ color_map = [(128, 64,128),
 def parse_args():
     parser = argparse.ArgumentParser(description='Custom Input')
     
-    parser.add_argument('--a', help='pidnet-s, pidnet-m or pidnet-l', default='pidnet-l', type=str)
+    parser.add_argument('--a', help='pidnet-s, pidnet-m or pidnet-l', default='pidnet-s', type=str)
     parser.add_argument('--c', help='cityscapes pretrained or not', type=bool, default=True)
-    parser.add_argument('--p', help='dir for pretrained model', default='../pretrained_models/cityscapes/PIDNet_L_Cityscapes_test.pt', type=str)
-    parser.add_argument('--r', help='root or dir for input images', default='../samples/', type=str)
+    parser.add_argument('--p', help='dir for pretrained model', default='output/camvid/pidnet_small_camvid/best.pt', type=str)
+    parser.add_argument('--r', help='root or dir for input images', default='samples/', type=str)
     parser.add_argument('--t', help='the format of input images (.jpg, .png, ...)', default='.png', type=str)     
 
     args = parser.parse_args()
@@ -73,7 +73,8 @@ def load_pretrained(model, pretrained):
 
 if __name__ == '__main__':
     args = parse_args()
-    images_list = glob.glob(args.r+'*'+args.t)
+    images_list = glob.glob("/zju/wzs_cv/Image-Semantic-Segmentation/PIDNet/samples/*.png")
+    print(f"image_list:{images_list}")
     sv_path = args.r+'outputs/'
     
     model = models.pidnet.get_pred_model(args.a, 19 if args.c else 11)
@@ -81,9 +82,11 @@ if __name__ == '__main__':
     model.eval()
     with torch.no_grad():
         for img_path in images_list:
-            img_name = img_path.split("\\")[-1]
+            img_name = img_path.split("/")[-1]
+            print(f"img_name:{img_name}")
             img = cv2.imread(os.path.join(args.r, img_name),
                                cv2.IMREAD_COLOR)
+            print(img.shape)
             sv_img = np.zeros_like(img).astype(np.uint8)
             img = input_transform(img)
             img = img.transpose((2, 0, 1)).copy()
@@ -96,13 +99,9 @@ if __name__ == '__main__':
             for i, color in enumerate(color_map):
                 for j in range(3):
                     sv_img[:,:,j][pred==i] = color_map[i][j]
+         
             sv_img = Image.fromarray(sv_img)
-            
+    
             if not os.path.exists(sv_path):
                 os.mkdir(sv_path)
             sv_img.save(sv_path+img_name)
-            
-            
-            
-        
-        

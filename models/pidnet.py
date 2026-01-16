@@ -191,7 +191,8 @@ def get_seg_model(cfg, imgnet_pretrained):
         model = PIDNet(m=3, n=4, num_classes=cfg.DATASET.NUM_CLASSES, planes=64, ppm_planes=112, head_planes=256, augment=True)
     
     if imgnet_pretrained:
-        pretrained_state = torch.load(cfg.MODEL.PRETRAINED, map_location='cpu')['state_dict'] 
+        # pretrained_state = torch.load(cfg.MODEL.PRETRAINED, map_location='cpu')['state_dict'] 
+        pretrained_state = torch.load(cfg.MODEL.PRETRAINED, map_location='cpu')
         model_dict = model.state_dict()
         pretrained_state = {k: v for k, v in pretrained_state.items() if (k in model_dict and v.shape == model_dict[k].shape)}
         model_dict.update(pretrained_state)
